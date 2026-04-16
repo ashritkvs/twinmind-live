@@ -215,7 +215,6 @@ export default function Home() {
       } else {
         showError(`Chat error: ${msg}`);
       }
-      // Remove empty assistant message on failure
       setMessages((prev) => {
         const updated = [...prev];
         if (updated[updated.length - 1].content === "") {
@@ -236,7 +235,7 @@ export default function Home() {
     }
 
     const context = transcriptRef.current
-      .slice(-settings.chatContextLines)
+      .slice(-settings.detailedAnswerContextLines)
       .join("\n");
 
     const prompt = settings.detailedAnswerPrompt

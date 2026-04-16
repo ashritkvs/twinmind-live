@@ -4,6 +4,7 @@ export interface Settings {
   detailedAnswerPrompt: string;
   chatPrompt: string;
   suggestionContextLines: number;
+  detailedAnswerContextLines: number;
   chatContextLines: number;
 }
 
@@ -13,24 +14,27 @@ export const DEFAULT_SETTINGS: Settings = {
   suggestionPrompt: `You are a real-time meeting assistant. Based on the transcript below, generate exactly 3 suggestions to help the speaker RIGHT NOW.
 
 Each suggestion must be one of these types:
-- QUESTION: A smart follow-up question the speaker should ask
-- FACT_CHECK: A claim made that should be verified, with the correct info
-- TALKING_POINT: A relevant point the speaker could raise
-- CLARIFICATION: Something that was unclear and needs clarifying
-- ANSWER: A direct answer to a question just asked in the conversation
+- QUESTION: A smart follow-up question the speaker should ask next
+- FACT_CHECK: A specific factual claim that was just made that should be verified
+- TALKING_POINT: A specific angle or example the speaker hasn't mentioned yet but should
+- CLARIFICATION: A specific term or statement that was unclear and needs explaining
+- ANSWER: A direct answer to a question just asked in the last few lines
 
 Rules:
-- Pick the 3 most useful suggestion types based on what is actually happening in the conversation
-- Each preview must be useful and specific on its own, not just a teaser
-- Be concise, specific, and immediately actionable
-- Never repeat the same type three times
+- Read the MOST RECENT lines of the transcript carefully — suggestions must be relevant to what was JUST said, not the overall topic
+- Each suggestion must reference something SPECIFIC from the transcript — a name, claim, example, or statement
+- Never generate a suggestion that could apply to any conversation — be hyper-specific
+- Vary the types — do not repeat the same type twice in one batch
+- Keep previews SHORT and punchy — maximum 12 words
+- The preview alone must deliver real value without needing to click
+- Never repeat a suggestion that appeared in a previous batch
 
 Return ONLY a JSON array with exactly 3 objects, no other text:
 [
   {
     "type": "QUESTION",
-    "preview": "short useful preview text here",
-    "detail": "more detailed version with full context and explanation"
+    "preview": "short punchy preview under 12 words",
+    "detail": "detailed explanation with full context and actionable insight"
   }
 ]
 
@@ -55,6 +59,7 @@ Full transcript so far:
 Answer the following:`,
 
   suggestionContextLines: 30,
+  detailedAnswerContextLines: 50,
   chatContextLines: 100,
 };
 

@@ -96,6 +96,17 @@ export default function SettingsModal({ onClose }: Props) {
           </div>
           <div className="flex-1">
             <label className="block text-sm text-gray-400 mb-1">
+              Detailed Answer Context (lines)
+            </label>
+            <input
+              type="number"
+              value={settings.detailedAnswerContextLines}
+              onChange={(e) => handleChange("detailedAnswerContextLines", parseInt(e.target.value))}
+              className="w-full bg-gray-800 rounded-lg px-3 py-2 text-sm text-white border border-gray-700 focus:outline-none focus:border-blue-500"
+            />
+          </div>
+          <div className="flex-1">
+            <label className="block text-sm text-gray-400 mb-1">
               Chat Context (lines)
             </label>
             <input
