@@ -44,7 +44,7 @@ export async function generateSuggestions(
     body: JSON.stringify({
       model: "openai/gpt-oss-120b",
       messages: [{ role: "user", content: prompt }],
-      reasoning_effort: "medium",
+      reasoning_effort: "low",
       max_completion_tokens: 1000,
     }),
   });
