@@ -5,7 +5,7 @@ A web app that listens to your mic during a meeting and shows you 3 useful sugge
 Built as part of a TwinMind engineering assignment.
 
 ## Live Demo
-[Insert Vercel URL here]
+https://twinmind-live-taupe.vercel.app/
 
 ## Getting Started
 
