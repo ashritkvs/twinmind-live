@@ -80,9 +80,11 @@ export default function ChatPanel({
                   : "bg-gray-800 text-gray-200"
               }`}
             >
-              <ReactMarkdown className="prose prose-invert prose-sm max-w-none">
-                {msg.content}
-              </ReactMarkdown>
+              <div className="prose prose-invert prose-sm max-w-none">
+                <ReactMarkdown>
+                  {msg.content}
+                </ReactMarkdown>
+              </div>
               <p className="text-xs opacity-40 mt-1 text-right">
                 {new Date(msg.timestamp).toLocaleTimeString()}
               </p>
