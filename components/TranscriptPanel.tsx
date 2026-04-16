@@ -28,7 +28,16 @@ export default function TranscriptPanel({
     <div className="flex flex-col h-full">
       {/* Header */}
       <div className="flex items-center justify-between px-4 py-3 border-b border-gray-800">
-        <h2 className="font-semibold text-sm text-gray-300">Transcript</h2>
+        <div className="flex items-center gap-2">
+          <h2 className="font-semibold text-sm text-gray-300">Mic & Transcript</h2>
+          <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${
+            isRecording
+              ? "bg-red-500/20 text-red-400"
+              : "bg-gray-700 text-gray-500"
+          }`}>
+            {isRecording ? "RECORDING" : "IDLE"}
+          </span>
+        </div>
         <div className="flex items-center gap-2">
           <button
             onClick={onRefresh}
@@ -63,7 +72,7 @@ export default function TranscriptPanel({
       <div className="flex-1 overflow-y-auto px-4 py-3 space-y-2">
         {transcript.length === 0 ? (
           <p className="text-gray-600 text-sm italic">
-            Press Start and begin speaking...
+            Click mic to start. Transcript appends every ~30s.
           </p>
         ) : (
           transcript.map((line, i) => (

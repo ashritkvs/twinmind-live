@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { RefreshCw } from "lucide-react";
 
 export interface Suggestion {
@@ -29,6 +30,8 @@ const TYPE_COLORS: Record<string, string> = {
   ANSWER: "bg-orange-500/20 text-orange-300 border-orange-500/30",
 };
 
+const CHUNK_INTERVAL_S = 30;
+
 export default function SuggestionsPanel({
   batches,
   onSuggestionClick,
@@ -36,19 +39,64 @@ export default function SuggestionsPanel({
   onRefresh,
   isRecording,
 }: Props) {
+  const [countdown, setCountdown] = useState(CHUNK_INTERVAL_S);
+
+  useEffect(() => {
+    if (!isRecording) {
+      setCountdown(CHUNK_INTERVAL_S);
+      return;
+    }
+
+    setCountdown(CHUNK_INTERVAL_S);
+    const interval = setInterval(() => {
+      setCountdown((prev) => {
+        if (prev <= 1) return CHUNK_INTERVAL_S;
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [isRecording]);
+
+  // Reset countdown when a new batch arrives
+  useEffect(() => {
+    if (batches.length > 0) {
+      setCountdown(CHUNK_INTERVAL_S);
+    }
+  }, [batches.length]);
+
   return (
     <div className="flex flex-col h-full">
       {/* Header */}
       <div className="flex items-center justify-between px-4 py-3 border-b border-gray-800">
-        <h2 className="font-semibold text-sm text-gray-300">Live Suggestions</h2>
-        <button
-          onClick={onRefresh}
-          disabled={isRefreshing || !isRecording}
-          className="flex items-center gap-1.5 text-xs text-gray-400 hover:text-white disabled:opacity-30 transition"
-        >
-          <RefreshCw size={13} className={isRefreshing ? "animate-spin" : ""} />
-          Refresh
-        </button>
+        <div className="flex items-center gap-2">
+          <h2 className="font-semibold text-sm text-gray-300">Live Suggestions</h2>
+          {batches.length > 0 && (
+            <span className="text-xs text-gray-600">
+              {batches.length} {batches.length === 1 ? "batch" : "batches"}
+            </span>
+          )}
+        </div>
+        <div className="flex items-center gap-3">
+          {isRecording && !isRefreshing && (
+            <span className="text-xs text-gray-500">
+              auto-refresh in {countdown}s
+            </span>
+          )}
+          {isRefreshing && (
+            <span className="text-xs text-blue-400 animate-pulse">
+              generating...
+            </span>
+          )}
+          <button
+            onClick={onRefresh}
+            disabled={isRefreshing || !isRecording}
+            className="flex items-center gap-1.5 text-xs text-gray-400 hover:text-white disabled:opacity-30 transition"
+          >
+            <RefreshCw size={13} className={isRefreshing ? "animate-spin" : ""} />
+            Reload suggestions
+          </button>
+        </div>
       </div>
 
       {/* Batches */}
@@ -66,18 +114,15 @@ export default function SuggestionsPanel({
 
         {batches.length === 0 && !isRefreshing && (
           <p className="text-gray-600 text-sm italic">
-            Suggestions will appear as you speak...
+            Suggestions appear here once recording starts.
           </p>
         )}
 
         {batches.map((batch, batchIndex) => (
           <div key={batchIndex}>
-            {/* Batch timestamp */}
             <p className="text-xs text-gray-600 mb-2">
               {new Date(batch.timestamp).toLocaleTimeString()}
             </p>
-
-            {/* Cards */}
             <div className="space-y-2">
               {batch.suggestions.map((suggestion, i) => (
                 <button
