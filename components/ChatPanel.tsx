@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import ReactMarkdown from "react-markdown";
 import { Send } from "lucide-react";
 import { Suggestion } from "./SuggestionsPanel";
 
@@ -79,7 +80,9 @@ export default function ChatPanel({
                   : "bg-gray-800 text-gray-200"
               }`}
             >
-              <p className="whitespace-pre-wrap">{msg.content}</p>
+              <ReactMarkdown className="prose prose-invert prose-sm max-w-none">
+                {msg.content}
+              </ReactMarkdown>
               <p className="text-xs opacity-40 mt-1 text-right">
                 {new Date(msg.timestamp).toLocaleTimeString()}
               </p>
