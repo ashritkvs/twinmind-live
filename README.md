@@ -18,7 +18,7 @@ npm install
 npm run dev
 ```
 
-Open `http://localhost:3000`, click Settings in the top right, paste your Groq API key, and hit Start.
+Open the live demo, click Settings in the top right, paste your Groq API key, and hit Start- as mentioned in the instructions.
 
 ## Stack
 
@@ -104,6 +104,9 @@ All prompts and context window sizes are editable in the settings screen. The de
 ## Export
 
 The Export button appears in the header once you've started recording or sent a message. Downloads a JSON file with the full transcript, every suggestion batch with timestamps, and the full chat history.
+
+## My opinion
+In my opinion, I believe I have done everything asked in the guidelines. UI was not a priority, as mentioned, but the quality of the prompts and suggestions was. 
 
 ## Error handling
 
